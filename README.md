@@ -42,7 +42,7 @@ public enum eColor
 }
 ```
 
-Let's place it in a file called `Enums.cs` we should also create a `ColorFromEnum` method where we could easily get a control background color by the value of the enum.
+Let's place it in a file called `Enums.cs` and we should also create a `ColorFromEnum` method where we could easily get a control background color by the enum value.
 
 ```cs
 public static class Enums
@@ -64,7 +64,7 @@ public static class Enums
 }
 ```
 ### Rounded Panel
-The next thing is to do is create a custom class for our rounded panel. There are plenty examples out there of how to do so, I chose a simple one that draws an arc in the corners of the panel, and I adapted it so the panels are always a perfect circle.
+Next we create a custom class for our rounded panel. There are plenty examples out there of how to do so, I chose a simple one that draws an arc in the corners of the panel, and I adapted it so the panels are always a perfect circle.
 
 ```cs
 public class CirclePanel : Panel
@@ -120,7 +120,7 @@ public class CirclePanel : Panel
 }
 ```
 
-And now, we can add to that class a CurrentColor property that will be very useful to us:
+And now, we can add a `CurrentColor` property that will be very useful to us
 ```cs
 private eColor currentColor;
 
@@ -136,7 +136,7 @@ public eColor CurrentColor
 ```
 Notice that whenever you set the property to a enum value, automatically the panel's background color is also set.
 
-We also wish to change the panel color when it gets clicked (or double-clicked), so it can iterate among the enum colors. For that let's create a `Panel_Click` method to be assigned to those events.
+In addition to that, we wish to change the panel color when it gets clicked (or double-clicked), so it can iterate over the enum colors. Let's create a `Panel_Click` method for that.
 
 ```cs
 private void Panel_Click(object sender, EventArgs e)
@@ -150,7 +150,7 @@ private void Panel_Click(object sender, EventArgs e)
         cp.CurrentColor++;
 }
 ```
-We can now do some initial setting in the class constructor, so the events are assigned and we initiate with the first color in the enum.
+We can now do some initial setting in the class constructor, so the events are assigned and we initiate with the enum's first color.
 ```cs
 public CirclePanel()
 {
@@ -161,7 +161,7 @@ public CirclePanel()
 ```
 For last, we also want to create something that will prevent the color change of the panel.
 - Because the black and white pins don't change colors.
-- And because we don't want the user to be able to change already verified combinations.
+- And because we don't want the user to be able to change an already verified combination.
 
 We can achieve that by creating a property named `AllowColorChange` 
 ```cs
@@ -269,7 +269,9 @@ private void AddNewResultRow(int blackPins, int whitePins)
     flpResults.Controls.Add(GetNewLine(flpResults.Width - 5));
 }
 ```
-Now the **core** logic of this game, the determination of how many black and white pins a guess gets
+Now the **core** logic of this game, the determination of how many black and white pins a guess gets.
+
+First we compare our `currentColors` panel list with the actual `answer` to find all black pins. We need a `remainingColors` list here, because the white pin can't be referenced to a color that already got a black pin. So if the current position, that is not one already used by a black pin (`array[i] == 0`), is the same as any remaining color (no matter which position), we add a white pin and remove that color from the list.
 
 ```cs
 private (int, int) GetResults()
@@ -311,9 +313,6 @@ private (int, int) GetResults()
     return result;
 }
 ```
-
-First we compare our `currentColors` panel list with the actual `answer` to find all black pins. We need a `remainingColors` list here, because the white pin can't be referenced to a color that already got a black pin. So if the current position, that is not one already used by a black pin (`array[i] == 0`), is the same as any remaining color and no matter which position, we add a white pin and remove that color from the list.
-
 Now we can code our `btnVerify_Click`
 
 ```cs
@@ -337,7 +336,7 @@ For last we can initialize what we need in the constructor
 public frmMain(eColor color1, eColor color2, eColor color3, eColor color4)
 {
     InitializeComponent();
-    
+
     //Starts with a new guessing row
     AddNewRow();
     answer.AddRange(new[] { color1, color2, color3, color4 });
